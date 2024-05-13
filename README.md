@@ -1,2 +1,2 @@
-# EE452_Team5_Project
+# EE452_2024_Team5_Project
 goodreads project for EE452
