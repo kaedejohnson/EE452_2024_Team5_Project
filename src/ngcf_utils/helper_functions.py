@@ -151,3 +151,46 @@ def eval_model(u_emb, i_emb, Rtr, Rte, k, device):
         ndcg_k.append(ndcg)
 
     return torch.cat(recall_k).mean(), torch.cat(ndcg_k).mean()
+def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
+    """
+    Compute link prediction matrix
+    
+    Arguments:
+    ---------
+    u_emb: User embeddings
+    i_emb: Item embeddings
+    Rtr: Sparse matrix with the training interactions
+    Rte: Sparse matrix with the testing interactions
+    device: Device to perform computation (CPU or GPU)
+    
+    Returns:
+    --------
+    prob_matrix: Matrix of interaction probabilities for each user-item pair
+    """
+    # split matrices
+    ue_splits = split_matrix(u_emb)
+    tr_splits = split_matrix(Rtr)
+    te_splits = split_matrix(Rte)
+    prob_matrix_list = []
+
+    # compute results for split matrices
+    for ue_f, tr_f, te_f in zip(ue_splits, tr_splits, te_splits):
+
+        # Compute raw scores
+        scores = torch.mm(ue_f, i_emb.t())
+
+        # Convert scores to probabilities
+        probabilities = torch.sigmoid(scores)
+
+        # Filter out training interactions to focus on test interactions
+        non_train_items = torch.from_numpy(1 - tr_f.todense()).float().to(device)
+        scores = scores * non_train_items
+        probabilities = probabilities * non_train_items
+
+        # Store probabilities matrix for this split
+        prob_matrix_list.append(probabilities.cpu().detach().numpy())
+
+    # Combine probability matrices from all splits
+    prob_matrix = np.concatenate(prob_matrix_list, axis=0)
+
+    return prob_matrix

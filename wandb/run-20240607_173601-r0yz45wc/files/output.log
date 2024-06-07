@@ -1,0 +1,53 @@
+n_users=1000, n_items=488
+n_interactions=7033
+n_train=5626, n_test=1407, sparsity=0.01441
+Creating interaction matrices R_train and R_test...
+Complete. Interaction matrices R_train and R_test created in 0.14079546928405762 sec
+Creating adjacency-matrix...
+Complete. Adjacency-matrix created in (1488, 1488) 0.04143023490905762 sec.
+Transforming adjacency-matrix to NGCF-adjacency matrix...
+Complete. Transformed adjacency-matrix to NGCF-adjacency matrix in 0.21333575248718262 sec.
+Initializing weights...
+Weights initialized.
+c:\Users\HP\Documents\GitHub\EE452_2024_Team5_Project\src\ngcf_utils\load_data.py:131: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -.5).flatten()
+Epoch: 0, Training time: 17.68s, Loss: 146.2836
+Epoch: 1, Training time: 17.45s, Loss: 97.4572
+Epoch: 2, Training time: 17.78s, Loss: 77.8882
+Epoch: 3, Training time: 17.50s, Loss: 75.4462
+Epoch: 4, Training time: 17.74s, Loss: 72.1152
+Evaluate current model:
+ Epoch: 4, Validation time: 0.57s
+ Loss: 72.1152:
+ Recall@5: 0.1340
+ NDCG@5: 0.1617
+Epoch: 5, Training time: 17.66s, Loss: 68.9312
+Epoch: 6, Training time: 18.34s, Loss: 65.5315
+Epoch: 7, Training time: 25.52s, Loss: 64.1504
+Epoch: 8, Training time: 24.18s, Loss: 62.9674
+Epoch: 9, Training time: 29.23s, Loss: 62.7276
+Evaluate current model:
+ Epoch: 9, Validation time: 0.61s
+ Loss: 62.7276:
+ Recall@5: 0.1523
+ NDCG@5: 0.1725
+Epoch: 10, Training time: 18.56s, Loss: 61.9238
+Epoch: 11, Training time: 19.74s, Loss: 61.5840
+Epoch: 12, Training time: 30.12s, Loss: 61.4937
+Epoch: 13, Training time: 27.75s, Loss: 63.5964
+Epoch: 14, Training time: 20.01s, Loss: 62.8466
+Evaluate current model:
+ Epoch: 14, Validation time: 0.76s
+ Loss: 62.8466:
+ Recall@5: 0.1419
+ NDCG@5: 0.1618
+Epoch: 15, Training time: 23.47s, Loss: 63.3936
+Epoch: 16, Training time: 24.46s, Loss: 63.1266
+Epoch: 17, Training time: 24.20s, Loss: 63.0759
+Epoch: 18, Training time: 25.72s, Loss: 61.3219
+Epoch: 19, Training time: 26.22s, Loss: 62.3381
+Evaluate current model:
+ Epoch: 19, Validation time: 1.00s
+ Loss: 62.3381:
+ Recall@5: 0.1547
+ NDCG@5: 0.1758
