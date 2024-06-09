@@ -9,3 +9,9 @@ ml-latest-small/README.txt
 ml-latest-small/tags.csv
 ratings.csv
 tags.csv
+data/bipartite_sample.graphml
+data/bipartite_sample_w_to_reads.graphml
+data/bipartite_sample_w_to_reads.graphml
+data/bipartite_sample_w_to_reads.graphml
+data/bipartite_sample_w_to_reads.graphml
+*.graphml

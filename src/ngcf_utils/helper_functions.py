@@ -151,6 +151,7 @@ def eval_model(u_emb, i_emb, Rtr, Rte, k, device):
         ndcg_k.append(ndcg)
 
     return torch.cat(recall_k).mean(), torch.cat(ndcg_k).mean()
+
 def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
     """
     Compute link prediction matrix
@@ -167,11 +168,18 @@ def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
     --------
     prob_matrix: Matrix of interaction probabilities for each user-item pair
     """
+
     # split matrices
     ue_splits = split_matrix(u_emb)
     tr_splits = split_matrix(Rtr)
     te_splits = split_matrix(Rte)
     prob_matrix_list = []
+
+    from scipy.sparse import find
+    from collections import Counter
+    non_zero_values = find(Rte)[2]
+    value_counts = Counter(non_zero_values)
+    print(value_counts)
 
     # compute results for split matrices
     for ue_f, tr_f, te_f in zip(ue_splits, tr_splits, te_splits):
@@ -185,6 +193,7 @@ def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
         # Filter out training interactions to focus on test interactions
         non_train_items = torch.from_numpy(1 - tr_f.todense()).float().to(device)
         scores = scores * non_train_items
+
         probabilities = probabilities * non_train_items
 
         # Store probabilities matrix for this split
@@ -193,4 +202,14 @@ def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
     # Combine probability matrices from all splits
     prob_matrix = np.concatenate(prob_matrix_list, axis=0)
 
-    return prob_matrix
+    # Binarize prob_matrix
+    predicted_ones = np.sum(prob_matrix > 0.9)
+    correct_ones = np.sum((prob_matrix > 0.9) & (Rte.todense() > 0))
+    actual_ones = np.sum(Rte.todense() > 0)
+
+    print(predicted_ones, correct_ones, actual_ones, prob_matrix.shape, u_emb.shape, i_emb.shape, Rte.shape)
+    precision = correct_ones / predicted_ones
+    recall = correct_ones / actual_ones 
+    f1_score = (2*precision*recall) / (precision + recall)
+
+    return prob_matrix, recall, precision, f1_score
