@@ -1,5 +1,7 @@
 # EE452_2024_Team5_Project
-goodreads project for EE452
+Team 5 EE452 Final Project
+Hans Kvaerum 381875
+Kaede Johnson 357472
 
 Our data was downloaded from this repository: https://github.com/zygmuntz/goodbooks-10k?tab=readme-ov-file
 
