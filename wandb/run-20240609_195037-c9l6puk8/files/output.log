@@ -1,0 +1,34 @@
+n_users=36199, n_items=5422
+n_interactions=4336118
+n_train=3468894, n_test=867224, sparsity=0.02209
+Creating interaction matrices R_train and R_test...
+Complete. Interaction matrices R_train and R_test created in 44.54563927650452 sec
+Creating adjacency-matrix...
+Complete. Adjacency-matrix created in (41621, 41621) 22.181413888931274 sec.
+Transforming adjacency-matrix to NGCF-adjacency matrix...
+Complete. Transformed adjacency-matrix to NGCF-adjacency matrix in 9.5409574508667 sec.
+Initializing weights...
+Weights initialized.
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss
+bce loss

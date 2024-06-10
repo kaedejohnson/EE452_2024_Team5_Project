@@ -18,7 +18,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class NGCF(nn.Module):
     def __init__(self, n_users, n_items, emb_dim, layers, reg, node_dropout, mess_dropout,
-        adj_mtx, pos_weight):
+        adj_mtx, pos_weight, prob_cutoff, loss_name):
         super().__init__()
 
         # initialize Class attributes
@@ -33,6 +33,8 @@ class NGCF(nn.Module):
         self.node_dropout = node_dropout
         self.mess_dropout = mess_dropout
         self.pos_weight = pos_weight
+        self.prob_cutoff = prob_cutoff
+        self.loss_name = loss_name
 
         #self.u_g_embeddings = nn.Parameter(torch.empty(n_users, emb_dim+np.sum(self.layers)))
         #self.i_g_embeddings = nn.Parameter(torch.empty(n_items, emb_dim+np.sum(self.layers)))
@@ -113,88 +115,10 @@ class NGCF(nn.Module):
         j = negative item (user did not interact with item)
         """
         # apply drop-out mask
-        A_hat = self._droupout_sparse(self.A) if self.node_dropout > 0 else self.A
-        L_hat = self._droupout_sparse(self.L) if self.node_dropout > 0 else self.L
+        A_hat = self._droupout_sparse(self.A).to(device) if self.node_dropout > 0 else self.A
+        L_hat = self._droupout_sparse(self.L).to(device) if self.node_dropout > 0 else self.L
 
-        ego_embeddings = torch.cat([self.weight_dict['user_embedding'], self.weight_dict['item_embedding']], 0)
-
-        all_embeddings = [ego_embeddings]
-
-        # forward pass for 'n' propagation layers
-        for k in range(self.n_layers):
-
-            # weighted sum messages of neighbours
-            side_embeddings = torch.sparse.mm(A_hat, ego_embeddings)
-            side_L_embeddings = torch.sparse.mm(L_hat, ego_embeddings)
-
-            # transformed sum weighted sum messages of neighbours
-            sum_embeddings = torch.matmul(side_embeddings, self.weight_dict['W_gc_%d' % k]) + self.weight_dict['b_gc_%d' % k]
-
-            # bi messages of neighbours
-            bi_embeddings = torch.mul(ego_embeddings, side_L_embeddings)
-            # transformed bi messages of neighbours
-            bi_embeddings = torch.matmul(bi_embeddings, self.weight_dict['W_bi_%d' % k]) + self.weight_dict['b_bi_%d' % k]
-
-            # non-linear activation 
-            ego_embeddings = F.leaky_relu(sum_embeddings + bi_embeddings)
-            # + message dropout
-            mess_dropout_mask = nn.Dropout(self.mess_dropout)
-            ego_embeddings = mess_dropout_mask(ego_embeddings)
-
-            # normalize activation
-            norm_embeddings = F.normalize(ego_embeddings, p=2, dim=1)
-
-            all_embeddings.append(norm_embeddings)
-
-        all_embeddings = torch.cat(all_embeddings, 1)
-        
-        # back to user/item dimension
-        u_g_embeddings, i_g_embeddings = all_embeddings.split([self.n_users, self.n_items], 0)
-
-        self.u_g_embeddings = nn.Parameter(u_g_embeddings)
-        self.i_g_embeddings = nn.Parameter(i_g_embeddings)
-        
-        u_emb = u_g_embeddings[u] # user embeddings
-        p_emb = i_g_embeddings[i] # positive item embeddings
-        n_emb = i_g_embeddings[j] # negative item embeddings
-
-        y_ui = torch.mul(u_emb, p_emb).sum(dim=1)
-        y_uj = torch.mul(u_emb, n_emb).sum(dim=1)
-
-        y_true_ui = torch.ones_like(y_ui)
-        y_true_uj = torch.zeros_like(y_uj)
-        
-        y_pred = torch.cat([y_ui, y_uj])
-        y_true = torch.cat([y_true_ui, y_true_uj])
-
-        pos_weight = torch.tensor([self.pos_weight], dtype=torch.float32)  # Adjust this weight
-        loss_fn = nn.BCEWithLogitsLoss() #pos_weight = pos_weight
-        bce_loss = loss_fn(y_pred, y_true)
-
-        if self.reg > 0.:
-            l2norm = (torch.sum(u_emb**2)/2. + torch.sum(p_emb**2)/2. + torch.sum(n_emb**2)/2.) / u_emb.shape[0]
-            l2reg  = self.reg*l2norm
-            bce_loss += l2reg
-
-        return bce_loss
-    
-
-
-"""     def forward(self, u, i, j):
-        
-        Computes the forward pass
-        
-        Arguments:
-        ---------
-        u = user
-        i = positive item (user interacted with item)
-        j = negative item (user did not interact with item)
-        
-        # apply drop-out mask
-        A_hat = self._droupout_sparse(self.A) if self.node_dropout > 0 else self.A
-        L_hat = self._droupout_sparse(self.L) if self.node_dropout > 0 else self.L
-
-        ego_embeddings = torch.cat([self.weight_dict['user_embedding'], self.weight_dict['item_embedding']], 0)
+        ego_embeddings = torch.cat([self.weight_dict['user_embedding'], self.weight_dict['item_embedding']], 0).to(device)
 
         all_embeddings = [ego_embeddings]
 
@@ -214,7 +138,7 @@ class NGCF(nn.Module):
             bi_embeddings = torch.matmul(bi_embeddings, self.weight_dict['W_bi_%d' % k]) + self.weight_dict['b_bi_%d' % k]
 
             # non-linear activation 
-            ego_embeddings = F.leaky_relu(sum_embeddings + bi_embeddings)
+            ego_embeddings = F.leaky_relu(sum_embeddings.to(device) + bi_embeddings.to(device))
             # + message dropout
             mess_dropout_mask = nn.Dropout(self.mess_dropout)
             ego_embeddings = mess_dropout_mask(ego_embeddings)
@@ -224,7 +148,7 @@ class NGCF(nn.Module):
 
             all_embeddings.append(norm_embeddings)
 
-        all_embeddings = torch.cat(all_embeddings, 1)
+        all_embeddings = torch.cat(all_embeddings, 1).to(device)
         
         # back to user/item dimension
         u_g_embeddings, i_g_embeddings = all_embeddings.split([self.n_users, self.n_items], 0)
@@ -238,14 +162,41 @@ class NGCF(nn.Module):
 
         y_ui = torch.mul(u_emb, p_emb).sum(dim=1)
         y_uj = torch.mul(u_emb, n_emb).sum(dim=1)
-        log_prob = (torch.log(torch.sigmoid(y_ui-y_uj))).mean()
 
-        # compute bpr-loss
-        bpr_loss = -log_prob
-        if self.reg > 0.:
-            l2norm = (torch.sum(u_emb**2)/2. + torch.sum(p_emb**2)/2. + torch.sum(n_emb**2)/2.) / u_emb.shape[0]
-            l2reg  = self.reg*l2norm
-            bpr_loss =  -log_prob + l2reg
+        if self.loss_name == 'bce':
 
-        return bpr_loss
- """
+            y_true_ui = torch.ones_like(y_ui).to(device)
+            y_true_uj = torch.zeros_like(y_uj).to(device)
+        
+            y_pred = torch.cat([y_ui, y_uj])
+            y_true = torch.cat([y_true_ui, y_true_uj])
+
+            if self.pos_weight != 1:
+                pos_weight = torch.tensor([self.pos_weight], dtype=torch.float32).to(device)
+                loss_fn = nn.BCEWithLogitsLoss(pos_weight = pos_weight)
+            else:
+                loss_fn = nn.BCEWithLogitsLoss()
+            bce_loss = loss_fn(y_pred, y_true)
+
+            if self.reg > 0.:
+                l2norm = (torch.sum(u_emb**2)/2. + torch.sum(p_emb**2)/2. + torch.sum(n_emb**2)/2.) / u_emb.shape[0]
+                l2reg  = self.reg*l2norm
+                bce_loss += l2reg
+
+            return bce_loss
+        
+        if self.loss_name == 'bpr':
+            
+            log_prob = (torch.log(torch.sigmoid(y_ui-y_uj))).mean()
+
+            # compute bpr-loss
+            bpr_loss = -log_prob
+            if self.reg > 0.:
+                l2norm = (torch.sum(u_emb**2)/2. + torch.sum(p_emb**2)/2. + torch.sum(n_emb**2)/2.) / u_emb.shape[0]
+                l2reg  = self.reg*l2norm
+                bpr_loss =  -log_prob + l2reg
+
+            return bpr_loss
+        
+        if self.loss_name == 'inference':
+            return y_ui

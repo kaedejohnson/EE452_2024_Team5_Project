@@ -1,0 +1,52 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.9.19",
+    "heartbeatAt": "2024-06-09T22:54:06.909486",
+    "startedAt": "2024-06-09T22:54:05.464606",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/kaedejohnson/EE452_2024_Team5_Project.git",
+        "commit": "88604be4f2109fae3db2ec204b852390ba7a5a4d"
+    },
+    "email": "kaede.johnson@epfl.ch",
+    "root": "C:/Users/HP/Documents/GitHub/EE452_2024_Team5_Project",
+    "host": "DESKTOP-VPCLE6A",
+    "username": "HP",
+    "executable": "c:\\Users\\HP\\anaconda3\\envs\\networkml\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 2208.0,
+        "min": 0.0,
+        "max": 2208.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2208.0,
+            "min": 0.0,
+            "max": 2208.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 475.60253524780273,
+            "used": 350.8600959777832
+        }
+    },
+    "gpu": "NVIDIA GeForce GTX 1050 Ti with Max-Q Design",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce GTX 1050 Ti with Max-Q Design",
+            "memory_total": 4294967296
+        }
+    ],
+    "memory": {
+        "total": 15.708953857421875
+    }
+}

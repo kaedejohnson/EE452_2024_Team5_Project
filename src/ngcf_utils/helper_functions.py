@@ -13,6 +13,7 @@ authors: Mohammed Yusuf Noor, Muhammed Imran Özyar, Calin Vasile Simon
 
 import numpy as np
 import torch
+from tqdm import tqdm
 
 def early_stopping(log_value, best_value, stopping_step, flag_step, expected_order='asc'):
     """
@@ -47,7 +48,7 @@ def train(model, data_generator, optimizer):
     model.train()
     n_batch = data_generator.n_train // data_generator.batch_size + 1
     running_loss=0
-    for _ in range(n_batch):
+    for _ in tqdm(range(n_batch)):
         u, i, j = data_generator.sample()
         optimizer.zero_grad()
         loss = model(u,i,j)

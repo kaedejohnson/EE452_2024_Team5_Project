@@ -1,0 +1,33 @@
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Current SDK version is 0.17.1
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Configure stats pid to 13836
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Loading settings from C:\Users\HP\.config\wandb\settings
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Loading settings from c:\Users\HP\Documents\GitHub\EE452_2024_Team5_Project\wandb\settings
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-06-09 20:30:47,678 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_init.py:_log_setup():520] Logging user logs to c:\Users\HP\Documents\GitHub\EE452_2024_Team5_Project\wandb\run-20240609_203047-wm1ou98m\logs\debug.log
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_init.py:_log_setup():521] Logging internal logs to c:\Users\HP\Documents\GitHub\EE452_2024_Team5_Project\wandb\run-20240609_203047-wm1ou98m\logs\debug-internal.log
+2024-06-09 20:30:47,679 INFO    MainThread:13836 [wandb_init.py:_jupyter_setup():466] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x000001E3120B9F10>
+2024-06-09 20:30:47,680 INFO    MainThread:13836 [wandb_init.py:init():560] calling init triggers
+2024-06-09 20:30:47,680 INFO    MainThread:13836 [wandb_init.py:init():567] wandb.init called with sweep_config: {}
+config: {'architecture': 'NGCF', 'loss': 'bpr', 'tr': 'True', 'pcutoff': '0.9', 'batch_size': 16, 'layers': [16, 32], 'emb_dim': 52, 'lr': 0.015, 'reg': 0.005, 'mess_dropout': 0.01, 'node_dropout': 0.01, 'user_count': 36199, 'book_count': 5422, 'k': 20, 'epochs': 50}
+2024-06-09 20:30:47,680 INFO    MainThread:13836 [wandb_init.py:init():610] starting backend
+2024-06-09 20:30:47,680 INFO    MainThread:13836 [wandb_init.py:init():614] setting up manager
+2024-06-09 20:30:47,683 INFO    MainThread:13836 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn, using: spawn
+2024-06-09 20:30:47,806 INFO    MainThread:13836 [wandb_init.py:init():622] backend started and connected
+2024-06-09 20:30:47,815 INFO    MainThread:13836 [wandb_run.py:_label_probe_notebook():1334] probe notebook
+2024-06-09 20:30:47,816 INFO    MainThread:13836 [wandb_run.py:_label_probe_notebook():1344] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2024-06-09 20:30:47,816 INFO    MainThread:13836 [wandb_init.py:init():711] updated telemetry
+2024-06-09 20:30:47,852 INFO    MainThread:13836 [wandb_init.py:init():744] communicating run to backend with 90.0 second timeout
+2024-06-09 20:30:48,733 INFO    MainThread:13836 [wandb_run.py:_on_init():2402] communicating current version
+2024-06-09 20:30:49,367 INFO    MainThread:13836 [wandb_run.py:_on_init():2411] got version response 
+2024-06-09 20:30:49,367 INFO    MainThread:13836 [wandb_init.py:init():795] starting run threads in backend
+2024-06-09 20:30:49,764 INFO    MainThread:13836 [wandb_run.py:_console_start():2380] atexit reg
+2024-06-09 20:30:49,765 INFO    MainThread:13836 [wandb_run.py:_redirect():2235] redirect: wrap_raw
+2024-06-09 20:30:49,765 INFO    MainThread:13836 [wandb_run.py:_redirect():2300] Wrapping output streams.
+2024-06-09 20:30:49,765 INFO    MainThread:13836 [wandb_run.py:_redirect():2325] Redirects installed.
+2024-06-09 20:30:49,767 INFO    MainThread:13836 [wandb_init.py:init():838] run started, returning control to user process
+2024-06-09 20:32:21,738 INFO    MainThread:13836 [jupyter.py:save_ipynb():372] not saving jupyter notebook
+2024-06-09 20:32:21,738 INFO    MainThread:13836 [wandb_init.py:_pause_backend():431] pausing backend

@@ -1,0 +1,37 @@
+n_users=1500, n_items=500
+n_interactions=49958
+n_train=34279, n_test=15679, sparsity=0.06661
+Creating interaction matrices R_train and R_test...
+Complete. Interaction matrices R_train and R_test created in 0.557652473449707 sec
+Creating adjacency-matrix...
+Complete. Adjacency-matrix created in (2000, 2000) 0.1970229148864746 sec.
+Transforming adjacency-matrix to NGCF-adjacency matrix...
+Complete. Transformed adjacency-matrix to NGCF-adjacency matrix in 0.05389761924743652 sec.
+Initializing weights...
+Weights initialized.
+c:\Users\HP\Documents\GitHub\EE452_2024_Team5_Project\src\ngcf_utils\load_data.py:131: RuntimeWarning: divide by zero encountered in power
+  d_inv = np.power(rowsum, -.5).flatten()
+
+
+  2%|▏         | 45/2143 [00:05<04:33,  7.67it/s]
+Requirement already satisfied: wandb in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (0.17.1)
+Requirement already satisfied: click!=8.0.0,>=7.1 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (8.1.7)
+Requirement already satisfied: docker-pycreds>=0.4.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (0.4.0)
+Requirement already satisfied: gitpython!=3.1.29,>=1.0.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (3.1.43)
+Requirement already satisfied: platformdirs in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (4.2.2)
+Requirement already satisfied: protobuf!=4.21.0,<6,>=3.19.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (5.27.1)
+Requirement already satisfied: psutil>=5.0.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (5.9.0)
+Requirement already satisfied: pyyaml in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (6.0.1)
+Requirement already satisfied: requests<3,>=2.0.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (2.31.0)
+Requirement already satisfied: sentry-sdk>=1.0.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (2.5.0)
+Requirement already satisfied: setproctitle in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (1.3.3)
+Requirement already satisfied: setuptools in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (68.2.2)
+Requirement already satisfied: typing-extensions in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from wandb) (4.11.0)
+Requirement already satisfied: colorama in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from click!=8.0.0,>=7.1->wandb) (0.4.6)
+Requirement already satisfied: six>=1.4.0 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from docker-pycreds>=0.4.0->wandb) (1.16.0)
+Requirement already satisfied: gitdb<5,>=4.0.1 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from gitpython!=3.1.29,>=1.0.0->wandb) (4.0.11)
+Requirement already satisfied: charset-normalizer<4,>=2 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from requests<3,>=2.0.0->wandb) (3.3.2)
+Requirement already satisfied: idna<4,>=2.5 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from requests<3,>=2.0.0->wandb) (3.7)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from requests<3,>=2.0.0->wandb) (2.2.1)
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from requests<3,>=2.0.0->wandb) (2024.2.2)
+Requirement already satisfied: smmap<6,>=3.0.1 in c:\users\hp\anaconda3\envs\networkml\lib\site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.29,>=1.0.0->wandb) (5.0.1)
