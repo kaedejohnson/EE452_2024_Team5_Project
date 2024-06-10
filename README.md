@@ -9,6 +9,6 @@ part1_exploration.ipynb contains data exploration and filtering. run to create t
 
 part2_interaction_prediction.ipynb contains interaction prediction model training. run to train model variants; the first train is the final train.
 
-part3_rating_prediction.ipynb contains 
+part3_rating_prediction.ipynb contains experiments with three different approaches to rating prediction - Singular Value Decomposition (SVD). User-Based Collaborative Filtering (UCBF) and our own double GNN-architecture.
 
 part4_inference.ipynb contains a sample recommendation call for the interaction predictor. eventually, rating prediction inference will be added, and the two tools will be combined...
