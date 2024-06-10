@@ -123,7 +123,7 @@ def eval_model(u_emb, i_emb, Rtr, Rte, k, device):
     tr_splits = split_matrix(Rtr)
     te_splits = split_matrix(Rte)
 
-    recall_k, ndcg_k= [], []
+    precision_k, recall_k, ndcg_k= [], [], []
     # compute results for split matrices
     for ue_f, tr_f, te_f in zip(ue_splits, tr_splits, te_splits):
 
@@ -144,14 +144,17 @@ def eval_model(u_emb, i_emb, Rtr, Rte, k, device):
 
         TP = (test_items * topk_preds).sum(1)
 
+        prec = torch.nan_to_num(TP/k, nan=0)
+
         rec = torch.nan_to_num(TP/test_items.sum(1), nan=0)
 
         ndcg = compute_ndcg_k(pred_items, test_items, test_indices, k, device)
 
+        precision_k.append(prec)
         recall_k.append(rec)
         ndcg_k.append(ndcg)
 
-    return torch.cat(recall_k).mean(), torch.cat(ndcg_k).mean()
+    return torch.cat(precision_k).mean(), torch.cat(recall_k).mean(), torch.cat(ndcg_k).mean()
 
 def probability_matrix(u_emb, i_emb, Rtr, Rte, device):
     """
